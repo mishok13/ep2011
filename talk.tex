@@ -3,8 +3,23 @@
 %%% TeX-master: t
 %%% End:
 \documentclass{beamer}
+\usepackage{listings}
+\usepackage{inconsolata}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\renewcommand*\familydefault{\sfdefault}
+
+\lstset{
+  basicstyle=\ttfamily
+}
 
 \begin{document}
+
+\begin{frame}{Test}
+  \begin{center}
+    \lstinputlisting[language=Python]{./importing.py}
+  \end{center}
+\end{frame}
 
 Intro
 
@@ -16,6 +31,9 @@ Import
 
 How data looks
 How to use lxml or protobuf for parsing
+Choosing data storage -- PostGIS, not MySQL or MongoDB or ...
+General import layout
+
 Some benchmarks
 Some code
 Some funny images
