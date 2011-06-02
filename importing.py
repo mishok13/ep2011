@@ -15,44 +15,37 @@ class OSMHandler(sax.handler.ContentHandler):
         sax.handler.ContentHandler.__init__(self)
         self.id = None
         self.geometry = None
-        self.tags = []
         self.nodes = {}
-        self.nds = []
         self.ways = {}
+        self.relations = {}
+        self.current = None
 
 
     def startElement(self, name, attrs):
         if name == 'node':
             self.id = attrs['id']
-            self.geometry = float(attrs['lat']), float(attrs['lon'])
+            self.current = (float(attrs['lat']), float(attrs['lon'])), []
+        elif name in ('way', 'relation'):
+            self.id = attrs['id']
+            self.current = [], []
         elif name == 'tag':
-            self.tags.append((attrs['k'], attrs['v']))
-        elif name == 'way':
-            self.id = attrs['id']
+            self.current[1].append((attrs['k'], attrs['v']))
         elif name == 'nd':
-            self.nds.append(self.nodes[attrs['ref']])
-        elif name == 'relation':
-            self.id = attrs['id']
-
+            self.current[0].append(attrs['ref'])
+        elif name == 'member':
+            self.current[0].append(attrs)
         else:
             print name, dict(attrs)
 
 
     def endElement(self, name):
-        if name == 'tag' or name == 'nd':
-            return
-        elif name == 'node':
-            self.nodes[self.id] = self.geometry, self.tags
-            self.id = None
-            self.geometry = None
-            self.tags = []
-        elif name == 'way':
-            self.ways[self.id] = (self.nds, self.tags)
-            self.id = None
-            self.tags = []
-            self.nds = []
-        else:
-            print name
+        try:
+            container = {'node': self.nodes,
+                         'way': self.ways,
+                         'relation': self.relations}[name]
+            container[self.id] = self.current
+        except KeyError:
+            pass
 
 
 
