@@ -21,6 +21,57 @@
   \end{center}
 \end{frame}
 
+
+\begin{frame}
+  \frametitle{OpenStreetMap}
+  \begin{itemize}
+  \item Crowd-sourced maps
+  \item Free license (CC-by-SA -> ODBL)
+  \item Good data coverage for Europe (most)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why OSM}
+  \begin{itemize}
+  \item Simple layout
+  \item Tons of data
+  \item Place where you can actually use your CS algorithms
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{How data looks}
+  \begin{itemize}
+  \item General layout
+  \item Nodes
+  \item Ways
+  \item Relation
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Importing data}
+  \begin{itemize}
+  \item How to handle nodes
+  \item ... ways
+  \item relations
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Initial sketch}
+  \begin{itemize}
+  \item Show simple SAX
+  \item nodes, tags, osm root tag
+  \item shapely
+  \end{itemize}
+\end{frame}
+
+
+
+
 Intro
 
 What's OSM
@@ -51,11 +102,16 @@ Existing solutions
 Structured search
 Fuzzy search
 Levenstein distance
+Adding
+Trigrams
+PostgreSQL full-text search
+Why not Soundex/Metaphone/Double metaphone
 
 Routing
 
 Building graphs
-Pygraph
+Why importing is harder for routing
+Pygraph, networkx, igraph
 
 
 
