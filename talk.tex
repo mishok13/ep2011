@@ -1,7 +1,3 @@
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
 \documentclass{beamer}
 \usepackage{listings}
 \usepackage{inconsolata}
@@ -20,7 +16,6 @@
     \lstinputlisting[language=Python]{./importing.py}
   \end{center}
 \end{frame}
-
 
 \begin{frame}
   \frametitle{OpenStreetMap}
@@ -69,50 +64,62 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Adding ways}
+  \begin{itemize}
+  \item ways, nds
+  \item different tags
+  \item polygons (maybe another frame?)
+  \end{itemize}
+\end{frame}
 
 
+\begin{frame}
+  \frametitle{Relations}
+  \begin{itemize}
+  \item
+  \end{itemize}
+\end{frame}
 
-Intro
+%% Intro
 
-What's OSM
-License
-Data quality ?
+%% What's OSM
+%% License
+%% Data quality ?
 
-Import
+%% Import
 
-How data looks
-How to use lxml or protobuf for parsing
-Choosing data storage -- PostGIS, not MySQL or MongoDB or ...
-General import layout
+%% How data looks
+%% How to use lxml or protobuf for parsing
+%% Choosing data storage -- PostGIS, not MySQL or MongoDB or ...
+%% General import layout
 
-Some benchmarks
-Some code
-Some funny images
+%% Some benchmarks
+%% Some code
+%% Some funny images
 
-Tiles
+%% Tiles
 
-Rendering
-Mapnik, etc
-How to write your renderer
-Scale the motherfucker
+%% Rendering
+%% Mapnik, etc
+%% How to write your renderer
+%% Scale the motherfucker
 
-Geocoding
+%% Geocoding
 
-Existing solutions
-Structured search
-Fuzzy search
-Levenstein distance
-Adding
-Trigrams
-PostgreSQL full-text search
-Why not Soundex/Metaphone/Double metaphone
+%% Existing solutions
+%% Structured search
+%% Fuzzy search
+%% Levenstein distance
+%% Adding
+%% Trigrams
+%% PostgreSQL full-text search
+%% Why not Soundex/Metaphone/Double metaphone
 
-Routing
+%% Routing
 
-Building graphs
-Why importing is harder for routing
-Pygraph, networkx, igraph
-
-
+%% Building graphs
+%% Why importing is harder for routing
+%% Pygraph, networkx, igraph
 
 \end{document}
