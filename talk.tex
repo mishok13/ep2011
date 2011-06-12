@@ -43,9 +43,9 @@
 \begin{frame}
   \frametitle{Why OSM}
   \begin{itemize}
-  \item Simple layout
-  \item Tons of data
-  \item Place where you can actually use your CS algorithms
+  \item Easy
+  \item Free
+  \item Data quality
   \end{itemize}
 \end{frame}
 
@@ -62,6 +62,32 @@
   \item Relation
   \end{itemize}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Nodes: image}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Nodes: XML}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Nodes: Python}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Ways: image}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ways: XML}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ways: Python}
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Importing data}
@@ -106,19 +132,30 @@ Other options: Osmosis, osm2pgsql,
 
 \begin{frame}
   \frametitle{Principles}
+  \begin{itemize}
+  \item Layers
+  \item Tiles
+  \item Polygons, points, layers
+  \item Bounding box % TODO: move to general section
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Layers}
+  basis of cartography
+  use for drawing different kind of information
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Datasources}
+  raster, vector
 \end{frame}
 
 \begin{frame}
   \frametitle{Doing the rendering}
-  cairo,
+  cairo,aggdraw
+  layer by layer
 \end{frame}
 
 \begin{frame}
@@ -140,6 +177,8 @@ Other options: Osmosis, osm2pgsql,
   fucking geocoding how does it work
   search for places
   search for names of geographic points
+  fuzzy search vs structured search
+  reverse geocoding
 \end{frame}
 
 \begin{frame}
@@ -147,6 +186,7 @@ Other options: Osmosis, osm2pgsql,
   fuzzy search
   different order
   incomplete information
+  double information
 \end{frame}
 
 \begin{frame}
@@ -196,6 +236,10 @@ http://norvig.com/spell-correct.html
   intersection of ways
 \end{frame}
 
+\begin{frame}
+  dijkstra, astar, empirical solution
+\end{frame}
+
 %% Intro
 
 %% What's OSM
@@ -227,5 +271,7 @@ http://norvig.com/spell-correct.html
 %% Building graphs
 %% Why importing is harder for routing
 %% Pygraph, networkx, igraph
+
+
 
 \end{document}
