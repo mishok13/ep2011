@@ -1,0 +1,12 @@
+<osm version="0.6">
+  <node>
+    <tag k="..." v="..." />
+  </node>
+  <way>
+    <tag k="..." v="..." />
+    <nd ref="..."/>
+  </way>
+  <relation>
+    <tag k="..." v="..." />
+  </relation>
+</osm>
