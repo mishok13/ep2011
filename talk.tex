@@ -9,12 +9,24 @@
   basicstyle=\ttfamily
 }
 
+\title{Using OpenStreetMap data with Python}
+\author{Andrii V. Mishkovskyi}
+\date{\today}
+
 \begin{document}
 
-\begin{frame}{Test}
-  \begin{center}
-    \lstinputlisting[language=Python]{./importing.py}
-  \end{center}
+% \begin{frame}{Test}
+%   \begin{center}
+%     \lstinputlisting[language=Python]{./importing.py}
+%   \end{center}
+% \end{frame}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
 \end{frame}
 
 \section{Introduction}
@@ -23,11 +35,11 @@
 \label{sec:definitions}
 
 \begin{frame}
-  \frametitle{What's this about}
+  \frametitle{Outline}
   \begin{itemize}
-  \item Understanding OpenStreetMap data
-  \item Learning how to use PostgreSQL for storing and processing data
-  \item How to create map services with combination of OSM data and PostgreSQL
+  \item Understanding OpenStreetMap data structure
+  \item Building map services with Python
+  \item Using Postgis to process data
   \end{itemize}
 \end{frame}
 
@@ -43,28 +55,30 @@
 \begin{frame}
   \frametitle{Why OSM}
   \begin{itemize}
-  \item Easy
-  \item Free
-  \item Data quality
+  \item Easy (except for starters)
+  \item Quality (except for non-Europe)
+  \item Free (without exceptions)
   \end{itemize}
 \end{frame}
 
-\subsection{Data layout}
+\section{Data layout}
 \label{sec:diving}
 
-
 \begin{frame}
-  \frametitle{How data looks}
+  \frametitle{The data}
   \begin{itemize}
-  \item General layout
-  \item Nodes
-  \item Ways
-  \item Relation
+  \item Three atoms: nodes, ways and relations
+  \item Each atom has id, geometry and tags
   \end{itemize}
 \end{frame}
+
+\subsection{Node}
+\label{sec:node}
 
 \begin{frame}
   \frametitle{Nodes: image}
+  geometry -- lat, lon
+  tags
 \end{frame}
 
 \begin{frame}
@@ -88,13 +102,27 @@
   \frametitle{Ways: Python}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Relations: image}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Relations: XML}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Relations: Python}
+\end{frame}
+
+\section{Importing}
+\label{sec:importing}
 
 \begin{frame}
   \frametitle{Importing data}
   \begin{itemize}
-  \item How to handle nodes
-  \item ... ways
-  \item relations
+  \item Aim for falty data
+  \item Parse iteratively
+  \item Cache everything
   \end{itemize}
 \end{frame}
 
@@ -124,33 +152,60 @@
   \end{itemize}
 \end{frame}
 
-\section{Importing}
+\begin{frame}
+  \frametitle{If not feeling adventourous}
+  \begin{itemize}
+  \item Osmosis -- very
+  \item osm2pgsql
+  \item osm2mongo, osm2shp
+  \end{itemize}
+\end{frame}
 
-Other options: Osmosis, osm2pgsql,
+\begin{frame}
+  \frametitle{Datasources}
+  \begin{itemize}
+  \item PostGIS
+  \item MongoDB
+  \item Spatialite
+  \end{itemize}
+\end{frame}
+
 
 \section{Rendering}
+
+\subsection{Definitions}
+\label{sec:definitions-1}
 
 \begin{frame}
   \frametitle{Principles}
   \begin{itemize}
-  \item Layers
-  \item Tiles
-  \item Polygons, points, layers
-  \item Bounding box % TODO: move to general section
+  \item Scale
+  \item Projection
+  \item Cartography
+  \item Types of maps
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How to approach rendering}
+  \begin{itemize}
+  \item Split your data in layers
+  \item Make projection configurable
+  \item Provide general way to select data sources
+  \item Think about cartographers
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Layers}
-  basis of cartography
-  use for drawing different kind of information
-
+  \begin{itemize}
+  \item Not exactly physical layers
+  \item Layers of graphical representation
+  \item Don't render text in several layers
+  \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Datasources}
-  raster, vector
-\end{frame}
+% TODO add dos and donts?
 
 \begin{frame}
   \frametitle{Doing the rendering}
