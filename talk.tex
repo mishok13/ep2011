@@ -118,20 +118,20 @@
 \label{sec:importing}
 
 \begin{frame}
-  \frametitle{Importing data}
+  \frametitle{Major points when parsing OSM}
   \begin{itemize}
-  \item Aim for falty data
+  \item Expect faulty data
   \item Parse iteratively
-  \item Cache everything
+  \item Cache extensively
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Initial sketch}
   \begin{itemize}
-  \item Show simple SAX
-  \item nodes, tags, osm root tag
-  \item shapely
+  \item Using SAX
+  \item Process only nodes
+  \item Create geometries using Shapely
   \end{itemize}
 \end{frame}
 
