@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[14pt]{beamer}
 \usepackage{listings}
 \usepackage{inconsolata}
 \usepackage[T1]{fontenc}
@@ -65,54 +65,54 @@
 \label{sec:diving}
 
 \begin{frame}
+  \frametitle{Data types}
+  \begin{description}
+  \item[Node] Geometric point or point of interest
+  \item[Way] Collection of points
+  \item[Relation] Collections of objects of any type
+  \end{description}
+\end{frame}
+
+\begin{frame}
   \frametitle{The data}
   \begin{itemize}
-  \item Three atoms: nodes, ways and relations
-  \item Each atom has id, geometry and tags
+  \item Each object has geometry, tags and changeset information
+  \item Tags are simply a list of key/value pairs
+  \item Geometry definition differs for different types
+  \item Changeset information you shouldn't care about
   \end{itemize}
 \end{frame}
 
-\subsection{Node}
-\label{sec:node}
-
 \begin{frame}
-  \frametitle{Nodes: image}
-  geometry -- lat, lon
-  tags
+  \frametitle{How is it stored?}
+  \begin{itemize}
+  \item XML (.osm)
+  \item Protocol buffers (beta, .pbf)
+  \item Other formats through 3rd parties
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Nodes: XML}
+  \frametitle{Nodes}
+  % TODO: add more text before actual xml and python
+  \only<1>{}
+  \only<2>{\center{\lstinputlisting[language=XML]{nodes.xml}}}
+  \only<3>{\lstinputlisting[language=Python]{nodes.py}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Nodes: Python}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Ways: image}
+  \only<1>{}
+  \only<2>{\center{\lstinputlisting[language=XML]{ways.xml}}}
+  \only<3>{\lstinputlisting[language=Python]{ways.py}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Ways: XML}
+  \frametitle{Relations}
+  \only<1>{}
+  \only<2>{\center{\lstinputlisting[language=XML]{relations.xml}}}
+  \only<3>{\lstinputlisting[language=Python]{relations.py}}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Ways: Python}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Relations: image}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Relations: XML}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Relations: Python}
-\end{frame}
 
 \section{Importing}
 \label{sec:importing}
