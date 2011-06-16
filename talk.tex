@@ -129,29 +129,33 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Initial sketch}
-  \begin{itemize}
-  \item Using SAX
-  \item Process only nodes
-  \item Create geometries using Shapely
-  \end{itemize}
+  \frametitle{Parsing data: nodes}
+  \only<1>{
+    \begin{itemize}
+    \item Using SAX
+    \item Just a simple node parser
+    \item Create geometries using Shapely
+    \end{itemize}}
+  \only<2>{
+    \lstinputlisting[firstline=3,lastline=10,language=Python]{nodes-simple.py}
+  }
+  \only<3>{
+    \lstinputlisting[firstline=10,lastline=15,language=Python]{nodes-simple.py}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Adding ways}
-  \begin{itemize}
-  \item ways, nds
-  \item different tags
-  \item polygons (maybe another frame?)
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Relations}
-  \begin{itemize}
-  \item
-  \end{itemize}
+  \frametitle{Parsing data: ways}
+  \only<1>{
+    \begin{itemize}
+    \item
+    \end{itemize}}
+  \only<2>{
+    \lstinputlisting[firstline=3,lastline=10,language=Python]{ways-simple.py}
+  }
+  \only<3>{
+    \lstinputlisting[firstline=10,lastline=15,language=Python]{ways-simple.py}
+  }
 \end{frame}
 
 \begin{frame}
@@ -164,7 +168,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Datasources}
+  \frametitle{Backends}
   \begin{itemize}
   \item PostGIS
   \item MongoDB
@@ -205,6 +209,27 @@
   \item Layers of graphical representation
   \item Don't render text in several layers
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rendering sketch}
+  \only<1>{
+    \begin{itemize}
+    \item
+    \end{itemize}
+  }
+  \only<2>{
+    \lstinputlisting[language=Python]{rendering-overview.py}
+  }
+  \only<3>{
+    \lstinputlisting[language=Python]{rendering-nodes.py}
+  }
+  \only<4>{
+    \lstinputlisting[language=Python]{rendering-ways.py}
+  }
+  % \only<>{}
+  % \only<>{}
+  % \only<>{}
 \end{frame}
 
 % TODO add dos and donts?
