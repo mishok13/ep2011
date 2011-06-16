@@ -13,6 +13,7 @@
 \author{Andrii V. Mishkovskyi}
 \date{\today}
 
+
 \begin{document}
 
 % \begin{frame}{Test}
@@ -101,15 +102,16 @@
 \end{frame}
 
 \begin{frame}
-  \only<1>{}
+  \frametitle{Ways}
+  \only<1>{test}
   \only<2>{\center{\lstinputlisting[language=XML]{ways.xml}}}
   \only<3>{\lstinputlisting[language=Python]{ways.py}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Relations}
-  \only<1>{}
-  \only<2>{\center{\lstinputlisting[language=XML]{relations.xml}}}
+  \only<1>{test}
+  \only<2>{\lstinputlisting[language=XML]{relations.xml}}
   \only<3>{\lstinputlisting[language=Python]{relations.py}}
 \end{frame}
 
@@ -214,38 +216,73 @@
 \end{frame}
 
 \begin{frame}
-  mapnik, xml styling?
+  mapnik, xml styling
 \end{frame}
 
 \begin{frame}
   using indexes in postgis
 \end{frame}
 
-\begin{frame}
-
-\end{frame}
-
 \section{Searching}
 
 \begin{frame}
   \frametitle{What's that?}
-  fucking geocoding how does it work
-  search for places
-  search for names of geographic points
-  fuzzy search vs structured search
-  reverse geocoding
+  \begin{itemize}
+  \item Codename geocoding
+  \item Similar to magnets
+  \item Fast or correct -- choose one
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Why is it hard?}
-  fuzzy search
-  different order
-  incomplete information
-  double information
+  \only<1>{
+    \begin{itemize}
+    \item Fuzzy search
+    \item Order matters
+    \item But not always
+    \item One place can have many names
+    \item One name can correspond to many places
+    \item People don't care about this at all!
+    \end{itemize}
+  }
+  \only<2>{
+    \begin{center}
+      \LARGE{I blame Google.}
+    \end{center}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Solutions}
+  \frametitle{Attempt at implementation}
+  \only<1>{
+    \begin{itemize}
+    \item Make the request structured
+    \item Or at least assume order
+    \item Assume valid input from users
+    \end{itemize}
+  }
+  \only<2>{
+    \lstinputlisting[language=Python]{structured-geocoding-prototype.py}
+  }
+  \only<3>{
+    \lstinputlisting[language=Python]{structured-geocoding-inner.py}
+  }
+\end{frame}
+
+
+
+
+% Everything that could go wrong, will go wrong
+% Seattle, Washington -> state or city
+
+\begin{frame}
+  \frametitle{Edit distance}
+  \begin{itemize}
+  \item Number of ops required for transforming words
+  \item Ops = replace, delete, add, transpose, etc
+  \item Doesn't help when looking at several words at once
+  \end{itemize}
   trigrams
   levenshtein distance
 \end{frame}
@@ -262,7 +299,7 @@
 
 
 
-http://norvig.com/spell-correct.html
+% http://norvig.com/spell-correct.html
 
 
 
@@ -326,7 +363,5 @@ http://norvig.com/spell-correct.html
 %% Building graphs
 %% Why importing is harder for routing
 %% Pygraph, networkx, igraph
-
-
 
 \end{document}
