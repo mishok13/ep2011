@@ -1,0 +1,25 @@
+        <node id="240120358" lat="47.1387109" lon="9.5209322" version="14" changeset="6315886" user="Snusmumriken" uid="76269" timestamp="2010-11-07T2
+0:46:15Z">
+                <tag k="capital" v="yes" />
+                <tag k="is_in" v="Liechtenstein,Europe" />
+                <tag k="name" v="Vaduz" />
+                <tag k="name:el" v="Βαντούζ" />
+                <tag k="name:eu" v="Vaduz" />
+                <tag k="name:is" v="Vaduz" />
+                <tag k="name:ru" v="Вадуц" />
+                <tag k="name:sk" v="Vaduz" />
+                <tag k="name:sv" v="Vaduz" />
+                <tag k="openGeoDB:auto_update" v="population,place,name,is_in" />
+                <tag k="openGeoDB:is_in" v="Liechtenstein,Europe" />
+                <tag k="openGeoDB:is_in_loc_id" v="35165" />
+                <tag k="openGeoDB:layer" v="6" />
+                <tag k="openGeoDB:location" v="political_structure" />
+                <tag k="openGeoDB:loc_id" v="35164" />
+                <tag k="openGeoDB:name" v="Vaduz" />
+                <tag k="openGeoDB:postal_codes" v="9490" />
+                <tag k="openGeoDB:type" v="100600000" />
+                <tag k="openGeoDB:version" v="0.2.6.11 / 2007-12-04 / http://fa-technik.adfc.de/code/opengeodb/dump/" />
+                <tag k="place" v="town" />
+                <tag k="population" v="5104" />
+                <tag k="wikipedia" v="Vaduz" />
+        </node>

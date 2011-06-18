@@ -121,11 +121,15 @@
 
 \begin{frame}
   \frametitle{Major points when parsing OSM}
-  \begin{itemize}
-  \item Expect faulty data
-  \item Parse iteratively
-  \item Cache extensively
-  \end{itemize}
+  \only<1>{
+    \begin{itemize}
+    \item Expect faulty data
+    \item Parse iteratively
+    \item Cache extensively
+    \item Order of elements is not guaranteed
+    \item But it's generally: nodes, ways, relations
+    \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
@@ -158,14 +162,6 @@
   }
 \end{frame}
 
-\begin{frame}
-  \frametitle{If not feeling adventourous}
-  \begin{itemize}
-  \item Osmosis -- very
-  \item osm2pgsql
-  \item osm2mongo, osm2shp
-  \end{itemize}
-\end{frame}
 
 \begin{frame}
   \frametitle{Backends}
@@ -173,6 +169,47 @@
   \item PostGIS
   \item MongoDB
   \item Spatialite
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Importing to PostGIS}
+  \only<1>{
+    \begin{itemize}
+    \item Build schema
+    \item Let database validate data
+    \item Select projection before importing
+    \item Use COPY statement
+    \end{itemize}
+  }
+  only<2>{
+    \lstinputlisting{import-postgis.py}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Importing to Mongo}
+  \only<1>{
+    \begin{itemize}
+    \item No schema required
+    \item Validate data in Python
+    \item Don't reproject
+    \item Use safe insert
+    \end{itemize}
+  }
+  only<2>{
+    \lstinputlisting{import-mongo.py}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Existing solutions}
+  \begin{itemize}
+  \item Osmosis
+  \item osm2pgsql
+  \item osm2mongo, osm2shp
   \end{itemize}
 \end{frame}
 
@@ -215,7 +252,10 @@
   \frametitle{Rendering sketch}
   \only<1>{
     \begin{itemize}
-    \item
+    \item Choose rendering library (pycairo, aggdraw, PIL?)
+    \item Make a decision about error handling
+    \item Support as many formats as possible (through GDAL, GeoAlchemy, etc.)
+    \item Shapely for geometries, PyProj for projections
     \end{itemize}
   }
   \only<2>{
@@ -227,26 +267,26 @@
   \only<4>{
     \lstinputlisting[language=Python]{rendering-ways.py}
   }
-  % \only<>{}
-  % \only<>{}
-  % \only<>{}
 \end{frame}
 
 % TODO add dos and donts?
 
 \begin{frame}
-  \frametitle{Doing the rendering}
-  cairo,aggdraw
-  layer by layer
+  \frametitle{A better option}
+  \only<1->{
+    Mapnik
+  }
+  \only<2->{
+    \begin{itemize}
+    \item Written in C++, with bindings through Boost.Python
+    \item Feature-rich
+    \item Reasonably fast
+    \item Uses XML for styles
+    \end{itemize}
+  }
 \end{frame}
 
-\begin{frame}
-  mapnik, xml styling
-\end{frame}
-
-\begin{frame}
-  using indexes in postgis
-\end{frame}
+postgis indexes!!! wsdfd
 
 \section{Searching}
 
@@ -282,6 +322,7 @@
   \frametitle{Attempt at implementation}
   \only<1>{
     \begin{itemize}
+    \item Put restrictions
     \item Make the request structured
     \item Or at least assume order
     \item Assume valid input from users
@@ -299,50 +340,92 @@
 \begin{frame}
   \frametitle{Fixing user input}
   \only<1>{
-    Calculate edit distance
+    Edit distance
+    \begin{itemize}
+    \item Works for two words
+    \item Most geocoding requests consist of several words
+    \item Scanning database for each pair distance isn't feasible
+    \item Unless you have it cached already
+    \end{itemize}
   }
   \only<2>{
-    Use Soundex or Metaphone hashing
+    Soundex/Metaphone hashing
+    \begin{itemize}
+    \item Phonetic hashing
+    \item Works in 90\% of the cases
+    \item If your language is English
+    \item Doesn't work well for placenames
+    \end{itemize}
   }
   \only<3>{
-    Trigrams
+    N-grams
+    \begin{itemize}
+    \item Useful for finding ``similarity''
+    \item Easier to index than edit distance
+    \item Gives less false positives than phonetic hashes
+    \item Trigrams most commonly used
+    \end{itemize}
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Making the search a tad free-form}
   \only<1>{
-    Approaching on high level
-    How do you know if
+    \begin{itemize}
+    \item Ranking every word would be a good start
+    \item Remove ``stop words'' -- at, the, in, \ldots
+    \item Combining ranks is harder
+    \end{itemize}
   }
   \only<2>{
-
+    \lstinputlisting{geocoding-freeform.py}
   }
 \end{frame}
 
-
-% Everything that could go wrong, will go wrong
-% Seattle, Washington -> state or city
-
 \begin{frame}
-  \frametitle{Edit distance}
+  \frametitle{Options to consider}
   \begin{itemize}
-  \item Number of ops required for transforming words
-  \item Ops = replace, delete, add, transpose, etc
-  \item Doesn't help when looking at several words at once
+  \item Geocommons
+  \item Nominatim
   \end{itemize}
-  trigrams
-  levenshtein distance
+\end{frame}
+
+
+\section{Routing}
+
+\begin{frame}
+  \frametitle{The problem}
+  \only<1>{
+    When introduced with routing problem, people think
+    Build graph, use Dijsktra, you're done!
+  }
+  \only<2>{
+    Not that simple
+    \begin{itemize}
+    \item Graph is sparse
+    \item Graph has to be updated often
+    \item Dijkstra algorithm is too general
+    \item A* is no better
+    \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
-  levenshtein distance and why it doesn't help
+  \frametitle{Building the graph}
+  \begin{itemize}
+  \item Don't use adjacency matrix
+  \item The graph has to very compact
+  \item networkx and igraph are a pretty good start
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Terms}
-  edit (levenshtein) distance
-  fuzzy search
+  \frametitle{PgRouting}
+  \begin{itemize}
+  \item Somewhat slow
+  \item Hard to correctly import data
+  \item
+  \end{itemize}
 \end{frame}
 
 
@@ -363,22 +446,6 @@
 %% PostgreSQL full-text search
 %% Why not Soundex/Metaphone/Double metaphone
 
-
-\section{Routing}
-
-\begin{frame}
-  \frametitle{PostgreSQL and PostGIS}
-
-\end{frame}
-
-\begin{frame}
-  smart solution with r-trees for storing data
-  intersection of ways
-\end{frame}
-
-\begin{frame}
-  dijkstra, astar, empirical solution
-\end{frame}
 
 %% Intro
 
