@@ -1,0 +1,14 @@
+<Style name="Simple">
+  <Rule>
+    <PolygonSymbolizer>
+      <CssParameter name="fill">#f2eff9
+      </CssParameter>
+    </PolygonSymbolizer>
+    <LineSymbolizer>
+      <CssParameter name="stroke">red
+      </CssParameter>
+      <CssParameter name="stroke-width">0.1
+      </CssParameter>
+    </LineSymbolizer>
+  </Rule>
+</Style>

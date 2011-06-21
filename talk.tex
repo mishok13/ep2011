@@ -6,7 +6,7 @@
 \renewcommand*\familydefault{\sfdefault}
 
 \lstset{
-  basicstyle=\ttfamily
+  basicstyle=\ttfamily\footnotesize
 }
 
 \title{Using OpenStreetMap data with Python}
@@ -16,14 +16,18 @@
 
 \begin{document}
 
-% \begin{frame}{Test}
-%   \begin{center}
-%     \lstinputlisting[language=Python]{./importing.py}
-%   \end{center}
-% \end{frame}
-
 \begin{frame}
   \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Who is this dude?}
+  \begin{itemize}
+  \item I love Python
+  \item I love OpenStreetMap
+  \item I do map rendering at CloudMade using Python
+  \item CloudMade uses OpenStreetMap data exclusively
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -177,7 +181,7 @@
     \item Use COPY statement
     \end{itemize}
   }
-  only<2>{
+  \only<2>{
     \lstinputlisting{import-postgis.py}
   }
 \end{frame}
@@ -243,6 +247,33 @@
   \end{itemize}
 \end{frame}
 
+\subsection{Mapnik}
+
+\begin{frame}
+  \frametitle{The magic of Mapnik}
+  \lstinputlisting[language=Python]{mapnik-overview.py}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Magic?}
+  \begin{itemize}
+  \item Mapnik's interface is straightforward
+  \item The implementation is not
+  \item Complexity is hidden in XML
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mapnik's XML}
+  \only<1>{
+    \lstinputlisting[language=XML]{mapnik-style.xml}
+  }
+  \only<2>{
+    \lstinputlisting[language=XML]{mapnik-layer.xml}
+  }
+\end{frame}
+
+
 \begin{frame}
   \frametitle{Rendering sketch}
   \only<1>{
@@ -266,22 +297,7 @@
 
 % TODO add dos and donts?
 
-\begin{frame}
-  \frametitle{A better option}
-  \only<1->{
-    Mapnik
-  }
-  \only<2->{
-    \begin{itemize}
-    \item Written in C++, with bindings through Boost.Python
-    \item Feature-rich
-    \item Reasonably fast
-    \item Uses XML for styles
-    \end{itemize}
-  }
-\end{frame}
-
-postgis indexes!!! wsdfd
+% postgis indexes!!! wsdfd
 
 \section{Searching}
 
@@ -334,7 +350,7 @@ postgis indexes!!! wsdfd
 
 \begin{frame}
   \frametitle{Fixing user input}
-  \only<1>{
+  \only<3>{
     Edit distance
     \begin{itemize}
     \item Works for two words
@@ -343,8 +359,11 @@ postgis indexes!!! wsdfd
     \item Unless you have it cached already
     \end{itemize}
   }
-  \only<2>{
-    Soundex/Metaphone hashing
+  \only<4>{
+    \lstinputlisting[language=Python]{geocoding-editdistance.py}
+  }
+  \only<1>{
+    Soundex/Metaphone/DoubleMetaphone hashing
     \begin{itemize}
     \item Phonetic hashing
     \item Works in 90\% of the cases
@@ -352,7 +371,10 @@ postgis indexes!!! wsdfd
     \item Doesn't work well for placenames
     \end{itemize}
   }
-  \only<3>{
+  \only<2>{
+    \lstinputlisting[language=Python]{geocoding-soundex.py}
+  }
+  \only<5>{
     N-grams
     \begin{itemize}
     \item Useful for finding ``similarity''
@@ -361,15 +383,18 @@ postgis indexes!!! wsdfd
     \item Trigrams most commonly used
     \end{itemize}
   }
+  \only<6>{
+    \lstinputlisting[language=Python]{geocoding-trigrams.py}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Making the search a tad free-form}
+  \frametitle{Making the search free-form}
   \only<1>{
     \begin{itemize}
-    \item Ranking every word would be a good start
-    \item Remove ``stop words'' -- at, the, in, \ldots
-    \item Combining ranks is harder
+    \item Normalize input: remove the, a, \ldots
+    \item Use existing free-form search solution
+    \item Combine ranks from different sources
     \end{itemize}
   }
   \only<2>{
@@ -380,11 +405,11 @@ postgis indexes!!! wsdfd
 \begin{frame}
   \frametitle{Options to consider}
   \begin{itemize}
+  \item PostreSQL + PostGIS
   \item Geocommons
   \item Nominatim
   \end{itemize}
 \end{frame}
-
 
 \section{Routing}
 
@@ -393,6 +418,7 @@ postgis indexes!!! wsdfd
   \only<1>{
     When introduced with routing problem, people think
     Build graph, use Dijsktra, you're done!
+    (And they are mostly right)
   }
   \only<2>{
     Not that simple
@@ -403,24 +429,80 @@ postgis indexes!!! wsdfd
     \item A* is no better
     \end{itemize}
   }
+  \only<3>{
+    \begin{itemize}
+    \item Routing is not only a technical problem
+    \item Different people expect different results for the same input
+    \item
+    \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Building the graph}
+  \only<1>{
+    \begin{itemize}
+    \item Adjacency matrix is not space-efficient
+    \item The graph representation has to very compact
+    \item networkx and igraph are both pretty good for a start
+    \end{itemize}
+  }
+  \only<2>{
+    \lstinputlisting[language=Python]{routing-networkx.py}
+  }
+  \only<3>{
+    \begin{itemize}
+    \item There is no silver bullet
+    \item No matter how nice these libs are, importing even
+      Europe will require more than 20 GB of RAM
+    \item Splitting data into country graphs is not enough
+    \item Our in-house C++ graph library requires ~20GB
+      of mem for the whole world
+    \end{itemize}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Other solutions}
   \begin{itemize}
-  \item Don't use adjacency matrix
-  \item The graph has to very compact
-  \item networkx and igraph are a pretty good start
+  \item PgRouting -- easier to start with, couldn't make it fast,
+    harder to configure
+  \item Neo4j -- tried 2 years ago, proved to be lacking when
+    presented with huge sparse graphs
+  \item Eat your own dogfood -- if doing ``serious business'', most
+    probably the best solution. Half-wink.
+  \end{itemize}
+\end{frame}
+
+\section*{Summary}
+
+\begin{frame}
+  \begin{center}
+    \only<1>{\LARGE{Bored already?}}
+    \only<2>{\LARGE{Lighten up, I'm done}}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Highlights}
+  \begin{itemize}
+  \item Start using OpenStreetMap data -- it's easy
+  \item Try building something simple -- it's cool
+  \item Try building something cool -- it's simple
+  \item Python is one of the best languages [for doing GIS]
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{PgRouting}
-  \begin{itemize}
-  \item Somewhat slow
-  \item Hard to correctly import data
-  \item Otherwise pretty cool solution
-  \end{itemize}
+  \begin{center}
+    \LARGE{Questions?}
+  \end{center}
+  \vfill
+  \begin{center}
+    \texttt{contact@mishkovskyi.net}\\
+    Slides: \texttt{mishkovskyi.net/ep2011}
+  \end{center}
 \end{frame}
 
 
@@ -473,5 +555,7 @@ postgis indexes!!! wsdfd
 %% Building graphs
 %% Why importing is harder for routing
 %% Pygraph, networkx, igraph
+
+%% TODO: situation where looping would be used constantly
 
 \end{document}
