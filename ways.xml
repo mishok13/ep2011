@@ -1,5 +1,12 @@
-<way>
-  <nd ref="" />
-  <tag k="" v="" />
-  <tag k="" v="" />
+<way id="4781367" version="1" changeset="102260"
+     uid="8710" user="murmel"
+     timestamp="2007-06-19T06:25:57Z">
+  <nd ref="30604007"/>
+  <nd ref="30604015"/>
+  <nd ref="30604017"/>
+  <nd ref="30604019"/>
+  <nd ref="30604020"/>
+  <tag k="created_by" v="JOSM" />
+  <tag k="highway" v="residential" />
+  <tag k="name" v="In den Äusseren" />
 </way>

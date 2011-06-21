@@ -1,0 +1,19 @@
+<relation id="16239" version="699" changeset="8440520"
+	  uid="122406" user="hanskuster"
+	  timestamp="2011-06-14T18:53:49Z">
+  <member type="way" ref="75393767" role="outer"/>
+  <member type="way" ref="75393837" role="outer"/>
+  <member type="way" ref="75393795" role="outer"/>
+  ...
+  <member type="way" ref="75393788" role="outer"/>
+  <tag k="admin_level" v="2" />
+  <tag k="boundary" v="administrative" />
+  <tag k="currency" v="EUR" />
+  <tag k="is_in" v="Europe" />
+  <tag k="ISO3166-1" v="AT" />
+  <tag k="name" v="Österreich" />
+  <tag k="name:ast" v="Austria" />
+  ...
+  <tag k="wikipedia:de" v="Österreich" />
+  <tag k="wikipedia:en" v="Austria" />
+</relation>

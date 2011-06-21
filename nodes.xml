@@ -1,4 +1,7 @@
-<node lat="" lon="">
-  <tag k="" v="" />
-  <tag k="" v="" />
+<node id="592637238" lat="47.1675211" lon="9.5089882"
+      version="2" changeset="6628391"
+      user="phinret" uid="135921"
+      timestamp="2010-12-11T19:20:16Z">
+  <tag k="amenity" v="bar" />
+  <tag k="name" v="Black Pearl" />
 </node>

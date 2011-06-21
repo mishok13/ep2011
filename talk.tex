@@ -13,6 +13,14 @@
 \author{Andrii V. Mishkovskyi}
 \date{\today}
 
+\AtBeginSection[]{%
+  \begin{frame}<beamer>
+    \begin{center}
+      \LARGE{\tableofcontents[sectionstyle=show/hide,
+      subsectionstyle=hide/show/hide]}
+    \end{center}
+  \end{frame}
+}
 
 \begin{document}
 
@@ -21,53 +29,70 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Who is this dude?}
+  \frametitle{Who is this dude anyway?}
   \begin{itemize}
   \item I love Python
   \item I love OpenStreetMap
   \item I do map rendering at CloudMade using Python
-  \item CloudMade uses OpenStreetMap data exclusively
+  \item CloudMade uses OpenStreetMap data extensively
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \tableofcontents
-\end{frame}
-
-\section{Introduction}
-
-\subsection{Definitions}
-\label{sec:definitions}
+\section*{Introduction}
 
 \begin{frame}
-  \frametitle{Outline}
+  \frametitle{}
   \begin{itemize}
-  \item Understanding OpenStreetMap data structure
-  \item Building map services with Python
-  \item Using Postgis to process data
+  \item Understand OpenStreetMap data structure
+  \item Import data into different formats and data backends
+  \item Get a feel of how basic GIS services work
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{OpenStreetMap}
   \begin{itemize}
-  \item Crowd-sourced maps
-  \item Free license (CC-by-SA -> ODBL)
-  \item Good data coverage for Europe (most)
+  \item Founded in 2004 as a response to Ordnance
+    Survey pricing scheme
+  \item >400k registered users
+  \item >16k active mappers
+  \item Supported by Microsoft, MapQuest (AOL), Yahoo!
+  \item Crowd-sourcing at its best
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why OSM}
+  \frametitle{Why OSM?}
   \begin{itemize}
-  \item Easy (except for starters)
-  \item Quality (except for non-Europe)
-  \item Free (without exceptions)
+  \item Fairly easy
+  \item Good quality
+  \item Growing community
+  \item Absolutely free
   \end{itemize}
 \end{frame}
 
 \section{Data layout}
-\label{sec:diving}
+
+\begin{frame}
+  \frametitle{The data}
+  \begin{itemize}
+  \item Each object has geometry, tags and changeset information
+  \item Tags are simply a list of key/value pairs
+  \item Geometry definition differs for different types
+  \item Changeset is not interesting when simply using the
+    data (as opposed to editing)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Storage type}
+  \begin{itemize}
+  \item XML (.osm)
+  \item Protocol buffers (.pbf, in beta status)
+  \item Other formats through 3rd parties
+    (Esri shapefile, Garmin GPX, etc.)
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{Data types}
@@ -76,25 +101,6 @@
   \item[Way] Collection of points
   \item[Relation] Collections of objects of any type
   \end{description}
-\end{frame}
-
-\begin{frame}
-  \frametitle{The data}
-  \begin{itemize}
-  \item Each object has geometry, tags and changeset information
-  \item Tags are simply a list of key/value pairs
-  \item Geometry definition differs for different types
-  \item Changeset information you shouldn't care about
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{How is it stored?}
-  \begin{itemize}
-  \item XML (.osm)
-  \item Protocol buffers (beta, .pbf)
-  \item Other formats through 3rd parties
-  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -115,8 +121,14 @@
   \only<2>{\lstinputlisting[language=Python]{relations.py}}
 \end{frame}
 
+\begin{frame}
+  \frametitle{For language zealots}
+  \begin{center}
+    \LARGE{Excuse me for not using namedtuples.}
+  \end{center}
+\end{frame}
+
 \section{Importing}
-\label{sec:importing}
 
 \begin{frame}
   \frametitle{Major points when parsing OSM}
@@ -127,6 +139,7 @@
     \item Cache extensively
     \item Order of elements is not guaranteed
     \item But it's generally: nodes, ways, relations
+    \item Ids are unique to datatype, not to the whole data set
     \end{itemize}
   }
 \end{frame}
@@ -140,83 +153,43 @@
     \item Create geometries using Shapely
     \end{itemize}}
   \only<2>{
-    \lstinputlisting[firstline=3,lastline=10,language=Python]{nodes-simple.py}
+    \lstinputlisting[firstline=1,lastline=16,language=Python]{nodes-simple.py}
   }
   \only<3>{
-    \lstinputlisting[firstline=10,lastline=15,language=Python]{nodes-simple.py}
+    \lstinputlisting[firstline=17,language=Python]{nodes-simple.py}
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Parsing data: ways}
   \only<1>{
-    \begin{itemize}
-    \item
-    \end{itemize}}
-  \only<2>{
-    \lstinputlisting[firstline=3,lastline=10,language=Python]{ways-simple.py}
+    \lstinputlisting[firstline=1,lastline=14,language=Python]{ways-simple.py}
   }
-  \only<3>{
-    \lstinputlisting[firstline=10,lastline=15,language=Python]{ways-simple.py}
+  \only<2>{
+    \lstinputlisting[firstline=15,language=Python]{ways-simple.py}
   }
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Backends}
+  \frametitle{Parsing data: homework}
   \begin{itemize}
-  \item PostGIS
-  \item MongoDB
-  \item Spatialite
+  \item The idea is simple
+  \item The implementation can use ElementTree if you work with
+    small extracts of data
+  \item Relations importing is left as an exercise for the reader
   \end{itemize}
 \end{frame}
-
-\begin{frame}
-  \frametitle{Importing to PostGIS}
-  \only<1>{
-    \begin{itemize}
-    \item Build schema
-    \item Let database validate data
-    \item Select projection before importing
-    \item Use COPY statement
-    \end{itemize}
-  }
-  \only<2>{
-    \lstinputlisting{import-postgis.py}
-  }
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Importing to Mongo}
-  \only<1>{
-    \begin{itemize}
-    \item No schema required
-    \item Validate data in Python
-    \item Don't reproject
-    \item Use safe insert
-    \end{itemize}
-  }
-  only<2>{
-    \lstinputlisting{import-mongo.py}
-  }
-\end{frame}
-
 
 \begin{frame}
   \frametitle{Existing solutions}
   \begin{itemize}
   \item Osmosis
   \item osm2pgsql
-  \item osm2mongo, osm2shp
+  \item osm2mongo, osm2shp, etc.
   \end{itemize}
 \end{frame}
 
-
 \section{Rendering}
-
-\subsection{Definitions}
-\label{sec:definitions-1}
 
 \begin{frame}
   \frametitle{Principles}
@@ -247,8 +220,6 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Mapnik}
-
 \begin{frame}
   \frametitle{The magic of Mapnik}
   \lstinputlisting[language=Python]{mapnik-overview.py}
@@ -274,28 +245,28 @@
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Rendering sketch}
-  \only<1>{
-    \begin{itemize}
-    \item Choose rendering library (pycairo, aggdraw, PIL?)
-    \item Make a decision about error handling
-    \item Support as many formats as possible (through GDAL, GeoAlchemy, etc.)
-    \item Shapely for geometries, PyProj for projections
-    \end{itemize}
-  }
-  \only<2>{
-    \lstinputlisting[language=Python]{rendering-overview.py}
-  }
-  \only<3>{
-    \lstinputlisting[language=Python]{rendering-nodes.py}
-  }
-  \only<4>{
-    \lstinputlisting[language=Python]{rendering-ways.py}
-  }
-\end{frame}
+% \begin{frame}
+%   \frametitle{Rendering sketch}
+%   \only<1>{
+%     \begin{itemize}
+%     \item Choose rendering library (pycairo, aggdraw, PIL?)
+%     \item Make a decision about error handling
+%     \item Support as many formats as possible (through GDAL, GeoAlchemy, etc.)
+%     \item Shapely for geometries, PyProj for projections
+%     \end{itemize}
+%   }
+%   \only<2>{
+%     \lstinputlisting[language=Python]{rendering-overview.py}
+%   }
+%   \only<3>{
+%     \lstinputlisting[language=Python]{rendering-nodes.py}
+%   }
+%   \only<4>{
+%     \lstinputlisting[language=Python]{rendering-ways.py}
+%   }
+% \end{frame}
 
-% TODO add dos and donts?
+% todo add dos and donts?
 
 % postgis indexes!!! wsdfd
 
@@ -342,11 +313,7 @@
   \only<2>{
     \lstinputlisting[language=Python]{structured-geocoding-prototype.py}
   }
-  \only<3>{
-    \lstinputlisting[language=Python]{structured-geocoding-inner.py}
-  }
 \end{frame}
-
 
 \begin{frame}
   \frametitle{Fixing user input}
@@ -359,13 +326,10 @@
     \item Unless you have it cached already
     \end{itemize}
   }
-  \only<4>{
-    \lstinputlisting[language=Python]{geocoding-editdistance.py}
-  }
   \only<1>{
-    Soundex/Metaphone/DoubleMetaphone hashing
+    Soundex/Metaphone/DoubleMetaphone
     \begin{itemize}
-    \item Phonetic hashing
+    \item Phonetic algorithms
     \item Works in 90\% of the cases
     \item If your language is English
     \item Doesn't work well for placenames
@@ -374,16 +338,16 @@
   \only<2>{
     \lstinputlisting[language=Python]{geocoding-soundex.py}
   }
-  \only<5>{
+  \only<4>{
     N-grams
     \begin{itemize}
     \item Useful for finding ``similarity''
     \item Easier to index than edit distance
-    \item Gives less false positives than phonetic hashes
+    \item Gives less false positives than phonetic algorithm
     \item Trigrams most commonly used
     \end{itemize}
   }
-  \only<6>{
+  \only<5>{
     \lstinputlisting[language=Python]{geocoding-trigrams.py}
   }
 \end{frame}
@@ -400,15 +364,6 @@
   \only<2>{
     \lstinputlisting{geocoding-freeform.py}
   }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Options to consider}
-  \begin{itemize}
-  \item PostreSQL + PostGIS
-  \item Geocommons
-  \item Nominatim
-  \end{itemize}
 \end{frame}
 
 \section{Routing}
@@ -433,7 +388,8 @@
     \begin{itemize}
     \item Routing is not only a technical problem
     \item Different people expect different results for the same input
-    \item
+    \item Routing through cities is always a bad choice
+      (even if it's projected to be faster)
     \end{itemize}
   }
 \end{frame}
