@@ -1,4 +1,4 @@
-from networkx import Graph
+from networkx import Graph, shortest_path
 
 ...
 
@@ -9,3 +9,6 @@ def build_graph(ways):
             weight = length(segment) * coef(tags)
             graph.add_edge(segment[0], segment[1],
                            weight=weight)
+    return graph
+
+shortest_path(graph, source, dest)
