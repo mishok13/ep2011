@@ -10,10 +10,8 @@ class Relation(object):
         if tags['type'] == 'multipolygon':
             outer = [ways[member['ref']]
                      for member in members
-                     if member['type'] == 'way' and
-                     member['role'] == 'outer']
+                     if member['role'] == 'outer']
             inner = [ways[member['ref']]
                      for member in members
-                     if member['type'] == 'way' and
-                     member['role'] == 'inner']
+                     if member['role'] == 'inner']
             self.geometry = MultiPolygon([(outer, inner)])

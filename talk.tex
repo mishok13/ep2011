@@ -5,8 +5,13 @@
 \usepackage[scaled]{helvet}
 \renewcommand*\familydefault{\sfdefault}
 
+\usetheme{Boadilla}
+\usecolortheme{orchid}
+
 \lstset{
-  basicstyle=\ttfamily\footnotesize
+  basicstyle=\ttfamily\footnotesize,
+  showspaces=false,
+  showstringspaces=false
 }
 
 \title{Using OpenStreetMap data with Python}
@@ -41,10 +46,10 @@
 \section*{Introduction}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Objectives}
   \begin{itemize}
   \item Understand OpenStreetMap data structure
-  \item Import data into different formats and data backends
+  \item How to parse it
   \item Get a feel of how basic GIS services work
   \end{itemize}
 \end{frame}
@@ -73,15 +78,10 @@
 
 \section{Data layout}
 
-\begin{frame}
-  \frametitle{The data}
-  \begin{itemize}
-  \item Each object has geometry, tags and changeset information
-  \item Tags are simply a list of key/value pairs
-  \item Geometry definition differs for different types
-  \item Changeset is not interesting when simply using the
-    data (as opposed to editing)
-  \end{itemize}
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=300px]{introduction.jpg}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -91,6 +91,17 @@
   \item Protocol buffers (.pbf, in beta status)
   \item Other formats through 3rd parties
     (Esri shapefile, Garmin GPX, etc.)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The data}
+  \begin{itemize}
+  \item Each object has geometry, tags and changeset information
+  \item Tags are simply a list of key/value pairs
+  \item Geometry definition differs for different types
+  \item Changeset is not interesting when simply using the
+    data (as opposed to editing)
   \end{itemize}
 \end{frame}
 
@@ -105,30 +116,26 @@
 
 \begin{frame}
   \frametitle{Nodes}
-  \only<1>{\center{\lstinputlisting[language=XML]{nodes.xml}}}
-  \only<2>{\lstinputlisting[language=Python]{nodes.py}}
+  \center{\lstinputlisting[language=XML]{nodes.xml}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Ways}
   \only<1>{\center{\lstinputlisting[language=XML]{ways.xml}}}
-  \only<2>{\lstinputlisting[language=Python]{ways.py}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Relations}
   \only<1>{\lstinputlisting[language=XML]{relations.xml}}
-  \only<2>{\lstinputlisting[language=Python]{relations.py}}
-\end{frame}
-
-\begin{frame}
-  \frametitle{For language zealots}
-  \begin{center}
-    \LARGE{Excuse me for not using namedtuples.}
-  \end{center}
 \end{frame}
 
 \section{Importing}
+
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=300px]{surprised.png}
+  \end{center}
+\end{frame}
 
 \begin{frame}
   \frametitle{Major points when parsing OSM}
@@ -145,13 +152,24 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Parsing data: nodes}
-  \only<1>{
-    \begin{itemize}
+  \frametitle{Parsing data}
+  \begin{itemize}
     \item Using SAX
-    \item Just a simple node parser
+    \item Doing simple reprojection
     \item Create geometries using Shapely
-    \end{itemize}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parsing data}
+  \framesubtitle{Projection}
+  \lstinputlisting[language=Python]{projection.py}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parsing data}
+  \framesubtitle{Nodes}
+  \only<1>{\lstinputlisting[language=Python]{nodes.py}}
   \only<2>{
     \lstinputlisting[firstline=1,lastline=16,language=Python]{nodes-simple.py}
   }
@@ -161,13 +179,33 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Parsing data: ways}
-  \only<1>{
+  \frametitle{Parsing data}
+  \framesubtitle{Ways}
+  \only<1>{\lstinputlisting[language=Python]{ways.py}}
+  \only<2>{
     \lstinputlisting[firstline=1,lastline=14,language=Python]{ways-simple.py}
   }
-  \only<2>{
+  \only<3>{
     \lstinputlisting[firstline=15,language=Python]{ways-simple.py}
   }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parsing data}
+  \framesubtitle{Relations}
+  \only<1>{\lstinputlisting[language=Python]{relations.py}}
+  \only<2>{
+    \begin{center}
+      \Large{The importing code is left as an exercise for the reader}
+    \end{center}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{For language zealots}
+  \begin{center}
+    \LARGE{Excuse me for not using namedtuples.}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -176,7 +214,8 @@
   \item The idea is simple
   \item The implementation can use ElementTree if you work with
     small extracts of data
-  \item Relations importing is left as an exercise for the reader
+  \item Have to stick to SAX when parsing huge extracts or
+    the whole planet data
   \end{itemize}
 \end{frame}
 
@@ -191,6 +230,12 @@
 
 \section{Rendering}
 
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=300px]{map.jpg}
+  \end{center}
+\end{frame}
+
 \begin{frame}
   \frametitle{Principles}
   \begin{itemize}
@@ -202,21 +247,21 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Layers}
+  \begin{itemize}
+  \item Not exactly physical layers
+  \item Layers of graphical representation
+  \item Don't render text in several layers
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{How to approach rendering}
   \begin{itemize}
   \item Split your data in layers
   \item Make projection configurable
   \item Provide general way to select data sources
   \item Think about cartographers
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Layers}
-  \begin{itemize}
-  \item Not exactly physical layers
-  \item Layers of graphical representation
-  \item Don't render text in several layers
   \end{itemize}
 \end{frame}
 
@@ -245,32 +290,13 @@
 \end{frame}
 
 
-% \begin{frame}
-%   \frametitle{Rendering sketch}
-%   \only<1>{
-%     \begin{itemize}
-%     \item Choose rendering library (pycairo, aggdraw, PIL?)
-%     \item Make a decision about error handling
-%     \item Support as many formats as possible (through GDAL, GeoAlchemy, etc.)
-%     \item Shapely for geometries, PyProj for projections
-%     \end{itemize}
-%   }
-%   \only<2>{
-%     \lstinputlisting[language=Python]{rendering-overview.py}
-%   }
-%   \only<3>{
-%     \lstinputlisting[language=Python]{rendering-nodes.py}
-%   }
-%   \only<4>{
-%     \lstinputlisting[language=Python]{rendering-ways.py}
-%   }
-% \end{frame}
-
-% todo add dos and donts?
-
-% postgis indexes!!! wsdfd
-
 \section{Searching}
+
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=300px]{geocoding.jpg}
+  \end{center}
+\end{frame}
 
 \begin{frame}
   \frametitle{What's that?}
@@ -324,6 +350,8 @@
     \item Most geocoding requests consist of several words
     \item Scanning database for each pair distance isn't feasible
     \item Unless you have it cached already
+    \item Check out Peter Norvig's
+      ``How to Write Spelling a Corrector'' article
     \end{itemize}
   }
   \only<1>{
@@ -341,7 +369,7 @@
   \only<4>{
     N-grams
     \begin{itemize}
-    \item Useful for finding ``similarity''
+    \item Substrings of n items from the search string
     \item Easier to index than edit distance
     \item Gives less false positives than phonetic algorithm
     \item Trigrams most commonly used
@@ -367,6 +395,12 @@
 \end{frame}
 
 \section{Routing}
+
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=300px]{routing.jpg}
+  \end{center}
+\end{frame}
 
 \begin{frame}
   \frametitle{The problem}
@@ -460,58 +494,5 @@
     Slides: \texttt{mishkovskyi.net/ep2011}
   \end{center}
 \end{frame}
-
-
-
-% http://norvig.com/spell-correct.html
-
-
-
-
-% GIN, GIS, n-grams, levenshtein distance
-
-%% Existing solutions
-%% Structured search
-%% Fuzzy search
-%% Levenstein distance
-%% Adding
-%% Trigrams
-%% PostgreSQL full-text search
-%% Why not Soundex/Metaphone/Double metaphone
-
-
-%% Intro
-
-%% What's OSM
-%% License
-%% Data quality ?
-
-%% Import
-
-%% How data looks
-%% How to use lxml or protobuf for parsing
-%% Choosing data storage -- PostGIS, not MySQL or MongoDB or ...
-%% General import layout
-
-%% Some benchmarks
-%% Some code
-%% Some funny images
-
-%% Tiles
-
-%% Rendering
-%% Mapnik, etc
-%% How to write your renderer
-%% Scale the motherfucker
-
-%% Geocoding
-
-%% Routing
-
-%% Building graphs
-%% Why importing is harder for routing
-%% Pygraph, networkx, igraph
-
-%% TODO: situation where looping would be used constantly
 
 \end{document}
